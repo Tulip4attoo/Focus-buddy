@@ -1,7 +1,7 @@
 import * as webllm from './lib/web-llm.js';
 
 let engine;
-let selectedModel = "Llama-3.2-1B-Instruct-q4f32_1-MLC"; // Default model
+let selectedModel = "Qwen2.5-3B-Instruct-q4f16_1-MLC"; // Changed default model
 
 async function initEngine(model) {
   const initProgressCallback = (progress) => {
@@ -20,17 +20,8 @@ async function initEngine(model) {
 }
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'getModels') {
-    const availableModels = webllm.prebuiltAppConfig.model_list;
-    const modelIds = availableModels.map(model => model.model_id);
-    console.log("Available model IDs:", modelIds);
-    sendResponse({ models: modelIds });
-  }
-
   if (request.type === 'generate') {
-    const model = request.model || selectedModel;
-    if (!engine || model !== selectedModel) {
-      selectedModel = model;
+    if (!engine) {
       initEngine(selectedModel).then(() => {
         generateResponse(request.prompt, sendResponse);
       });
