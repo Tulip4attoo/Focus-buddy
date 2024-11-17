@@ -4,7 +4,12 @@
   "version": "1.0",
   "description": "Run LLM directly in browser",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js",
