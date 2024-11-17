@@ -39,8 +39,13 @@ ${webPageInfo}`;
         output.className = 'error';
         output.textContent = `Error: ${response.error}`;
       } else if (response && response.result) {
+        const finalAnswerRegex = /FINAL ANSWER:\s*(Yes|No)/i;
+        const match = response.result.match(finalAnswerRegex);
+        const answer = match ? match[1] : 'Unknown';
+        
         output.className = '';
-        output.textContent = response.result;
+        output.innerHTML = `<div class="answer ${answer.toLowerCase()}">${answer}</div>
+<div class="full-response">${response.result}</div>`;
       } else {
         output.className = 'error';
         output.textContent = 'No response received';
