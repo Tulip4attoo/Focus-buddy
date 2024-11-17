@@ -34,6 +34,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function generateResponse(prompt, sendResponse) {
   (async () => {
+    const startTime = performance.now();
     try {
       const system_prompt = `You are an AI assistant helping to analyze web page information in relation to a user's current task. For each piece of web page information provided, evaluate its relevance and usefulness to the given task.
 
@@ -99,11 +100,20 @@ FINAL ANSWER: Yes`;
         messages
       });
 
+      const endTime = performance.now();
+      const processingTime = (endTime - startTime) / 1000; // Convert to seconds
+      console.log(`Response generated in ${processingTime.toFixed(2)} seconds`);
+      
       console.log("Generated response:", response.choices[0].message.content);
-      sendResponse({ result: response.choices[0].message.content });
+      sendResponse({ 
+        result: response.choices[0].message.content,
+        processingTime: processingTime
+      });
     } catch (error) {
-      console.error("Error generating response:", error);
-      sendResponse({ error: error.message });
+      const endTime = performance.now();
+      const processingTime = (endTime - startTime) / 1000;
+      console.error(`Error generating response after ${processingTime.toFixed(2)} seconds:`, error);
+      sendResponse({ error: error.message, processingTime: processingTime });
     }
   })();
 } 
