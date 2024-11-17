@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const output = document.getElementById('output');
 
   document.getElementById('generate').addEventListener('click', async () => {
-    const prompt = document.getElementById('prompt').value;
+    const task = document.getElementById('prompt').value;
     output.textContent = 'Generating...';
 
     // Get current tab information
@@ -21,23 +21,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const pageInfo = `Current Page:
-Title: ${tab.title}
+    const webPageInfo = `Title: ${tab.title}
 URL: ${tab.url}
-Description: ${descriptionResult.result.description}
-Preview: ${descriptionResult.result.text}...\n\n`;
+Description: ${descriptionResult.result.description}`;
+
+    const formattedPrompt = `Please analyze the following web page information and determine if it is relevant and/or helpful for the given task.
+
+TASK: ${task}
+WEB PAGE INFORMATION:
+${webPageInfo}`;
 
     chrome.runtime.sendMessage({
       type: 'generate',
-      prompt: prompt,
-      tabInfo: pageInfo
+      prompt: formattedPrompt
     }, function(response) {
       if (response && response.error) {
         output.className = 'error';
         output.textContent = `Error: ${response.error}`;
       } else if (response && response.result) {
         output.className = '';
-        output.textContent = pageInfo + response.result;
+        output.textContent = response.result;
       } else {
         output.className = 'error';
         output.textContent = 'No response received';

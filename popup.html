@@ -3,13 +3,16 @@
 <head>
   <style>
     body { width: 300px; padding: 10px; }
+    #prompt { width: 100%; margin-bottom: 10px; }
     #output { margin-top: 10px; white-space: pre-wrap; }
     .error { color: red; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
   </style>
 </head>
 <body>
-  <textarea id="prompt" rows="4" placeholder="Enter your prompt..."></textarea>
-  <button id="generate">Generate</button>
+  <label for="prompt">Enter your task:</label>
+  <textarea id="prompt" rows="4" placeholder="What are you trying to accomplish? (e.g., 'Finding healthy breakfast recipes')"></textarea>
+  <button id="generate">Analyze Page Relevance</button>
   <div id="output"></div>
   <script src="popup.js"></script>
 </body>
