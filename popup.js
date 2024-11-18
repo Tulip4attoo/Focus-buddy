@@ -25,9 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 URL: ${tab.url}
 Description: ${descriptionResult.result.description}`;
 
-    const formattedPrompt = `Please analyze the following web page information and determine if it is relevant and/or helpful for the given task.
-
-TASK: ${task}
+    const formattedPrompt = `TASK: ${task}
 WEB PAGE INFORMATION:
 ${webPageInfo}`;
 
