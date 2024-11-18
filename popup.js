@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const output = document.getElementById('output');
 
-  document.getElementById('generate').addEventListener('click', async () => {
+  async function handleGenerate() {
     const task = document.getElementById('prompt').value;
     output.textContent = 'Generating...';
 
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstParagraph = document.querySelector('p')?.textContent || '';
         return {
           description: metaDescription,
-          text: firstParagraph.slice(0, 200) // Get first 200 characters of first paragraph
+          text: firstParagraph.slice(0, 200)
         };
       }
     });
@@ -31,25 +31,35 @@ TASK: ${task}
 WEB PAGE INFORMATION:
 ${webPageInfo}`;
 
-    chrome.runtime.sendMessage({
-      type: 'generate',
-      prompt: formattedPrompt
-    }, function(response) {
-      if (response && response.error) {
+    // Create a connection to the background script
+    const port = chrome.runtime.connect({ name: 'stream-response' });
+    
+    // Listen for streaming responses
+    port.onMessage.addListener((message) => {
+      if (message.error) {
         output.className = 'error';
-        output.textContent = `Error: ${response.error}`;
-      } else if (response && response.result) {
-        const finalAnswerRegex = /FINAL ANSWER:\s*(Yes|No)/i;
-        const match = response.result.match(finalAnswerRegex);
-        const answer = match ? match[1] : 'Unknown';
-        
-        output.className = '';
-        output.innerHTML = `<div class="answer ${answer.toLowerCase()}">${answer}</div>
-<div class="full-response">${response.result}</div>`;
-      } else {
-        output.className = 'error';
-        output.textContent = 'No response received';
+        output.textContent = `Error: ${message.error}`;
+      } else if (message.content) {
+        updateOutput(message.content);
       }
     });
-  });
+
+    // Send request to background script
+    port.postMessage({
+      type: 'generate',
+      prompt: formattedPrompt
+    });
+  }
+
+  function updateOutput(answer) {
+    const finalAnswerRegex = /FINAL ANSWER:\s*(Yes|No)/i;
+    const match = answer.match(finalAnswerRegex);
+    const finalAnswer = match ? match[1] : 'Unknown';
+    
+    output.className = '';
+    output.innerHTML = `<div class="answer ${finalAnswer.toLowerCase()}">${finalAnswer}</div>
+<div class="full-response">${answer}</div>`;
+  }
+
+  document.getElementById('generate').addEventListener('click', handleGenerate);
 }); 
