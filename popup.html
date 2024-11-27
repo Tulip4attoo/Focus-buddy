@@ -1,50 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Focus Buddy</title>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-    }
-    .page-info {
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-    .info-label {
-      font-weight: bold;
-      color: #666;
-    }
-    .info-content {
-      word-wrap: break-word;
-      margin: 5px 0;
-    }
-    .decision {
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 5px;
-      text-align: center;
-    }
-    .allow {
-      background-color: #e7f5e7;
-      color: #0f5f0f;
-    }
-    .block {
-      background-color: #ffe7e7;
-      color: #5f0f0f;
-    }
-  </style>
+  <title>Website Analysis</title>
+  <link rel="stylesheet" type="text/css" href="popup.css">
 </head>
 <body>
-  <div class="page-info">
-    <div class="info-label">URL:</div>
-    <div id="pageUrl" class="info-content"></div>
+  <div class="container">
+    <h2>Website Information</h2>
+    <div class="info-section">
+      <p><strong>URL:</strong> <span id="pageUrl"></span></p>
+      <p><strong>Title:</strong> <span id="pageTitle"></span></p>
+      <p><strong>Description:</strong> <span id="pageDescription"></span></p>
+    </div>
     
-    <div class="info-label">Title:</div>
-    <div id="pageTitle" class="info-content"></div>
-    
-    <div class="info-label">Description:</div>
-    <div id="pageDescription" class="info-content"></div>
+    <h2>Analysis Result</h2>
+    <div class="analysis-section">
+      <p id="analysisResult"></p>
+    </div>
   </div>
   <script type="module" src="popup.js"></script>
 </body>

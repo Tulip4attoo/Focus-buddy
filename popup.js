@@ -15,26 +15,17 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('pageTitle').textContent = pageInfo.title;
       document.getElementById('pageDescription').textContent = pageInfo.description || 'No description found';
 
-      // Get LLM decision
+      // Get LLM analysis
       try {
-        const decision = await llmService.analyzeWebsite(pageInfo);
-        displayDecision(decision);
+        const analysis = await llmService.analyzeWebsite(pageInfo);
+        document.getElementById('analysisResult').textContent = analysis.result;
       } catch (error) {
-        console.error('Error getting LLM decision:', error);
+        console.error('Error getting LLM analysis:', error);
+        document.getElementById('analysisResult').textContent = 'Error analyzing website';
       }
     });
   });
 });
-
-function displayDecision(decision) {
-  const decisionElement = document.createElement('div');
-  decisionElement.innerHTML = `
-    <div class="decision ${decision.decision}">
-      <h3>${decision.decision.toUpperCase()}</h3>
-    </div>
-  `;
-  document.body.appendChild(decisionElement);
-}
 
 // Function to be injected into the page
 function getPageInfo() {
