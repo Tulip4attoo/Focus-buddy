@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Focus Buddy</title>
+  <style>
+    body {
+      width: 300px;
+      padding: 10px;
+    }
+    .page-info {
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    .info-label {
+      font-weight: bold;
+      color: #666;
+    }
+    .info-content {
+      word-wrap: break-word;
+      margin: 5px 0;
+    }
+    .decision {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+    .allow {
+      background-color: #e7f5e7;
+      color: #0f5f0f;
+    }
+    .block {
+      background-color: #ffe7e7;
+      color: #5f0f0f;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-info">
+    <div class="info-label">URL:</div>
+    <div id="pageUrl" class="info-content"></div>
+    
+    <div class="info-label">Title:</div>
+    <div id="pageTitle" class="info-content"></div>
+    
+    <div class="info-label">Description:</div>
+    <div id="pageDescription" class="info-content"></div>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html> 
