@@ -1,9 +1,4 @@
 class MockLLMService {
-  /**
-   * Simulates an LLM analyzing website content and making a decision
-   * @param {Object} pageInfo - Contains url, title, and description of the webpage
-   * @returns {Promise<Object>} - Returns decision object with allow/block status
-   */
   async analyzeWebsite(pageInfo) {
     // Simulate API processing time (300-800ms)
     const processingTime = Math.random() * 500 + 300;
@@ -13,11 +8,11 @@ class MockLLMService {
     const isAllowed = Math.random() > 0.5;
     
     return {
-      decision: isAllowed ? 'allow' : 'block'
+      result: isAllowed ? 'ALLOW' : 'BLOCK'  // Changed from 'decision' to 'result'
     };
   }
 }
 
 // Export the service
 const llmService = new MockLLMService();
-export default llmService; 
+export default llmService;
