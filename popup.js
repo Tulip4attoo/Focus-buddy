@@ -1,17 +1,16 @@
 import llmService from './llmService.js';
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Get the active tab
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     const activeTab = tabs[0];
     
-    // Inject content script to get page information
     chrome.scripting.executeScript({
       target: {tabId: activeTab.id},
       function: getPageInfo
     }, async (results) => {
-      // Display the results
       const pageInfo = results[0].result;
+
+      // Display page info
       document.getElementById('pageUrl').textContent = pageInfo.url;
       document.getElementById('pageTitle').textContent = pageInfo.title;
       document.getElementById('pageDescription').textContent = pageInfo.description || 'No description found';
@@ -32,8 +31,6 @@ function displayDecision(decision) {
   decisionElement.innerHTML = `
     <div class="decision ${decision.decision}">
       <h3>${decision.decision.toUpperCase()}</h3>
-      <p>Confidence: ${decision.confidence}%</p>
-      <p>Reason: ${decision.reason}</p>
     </div>
   `;
   document.body.appendChild(decisionElement);
