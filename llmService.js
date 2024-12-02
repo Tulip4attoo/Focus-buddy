@@ -1,16 +1,3 @@
-class MockLLMService {
-  async analyzeWebsite(pageInfo) {
-    // Simulate API processing time (300-800ms)
-    const processingTime = Math.random() * 500 + 300;
-    await new Promise(resolve => setTimeout(resolve, processingTime));
-
-    // Simulate LLM decision (random for now)
-    const isAllowed = Math.random() > 0.5;
-
-    return isAllowed ? 'ALLOW' : 'BLOCK';
-  }
-}
-
 class LMStudioLLMService {
   constructor() {
     this.API_URL = "http://127.0.0.1:1234/v1/chat/completions";
@@ -80,6 +67,6 @@ const log = async (...args) => chrome.runtime.sendMessage({
   data: args,
 });
 
-// const llmService = new MockLLMService();
+
 const llmService = new LMStudioLLMService();
 export { llmService as default, log };
