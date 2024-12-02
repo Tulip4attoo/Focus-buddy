@@ -5,7 +5,11 @@
   "description": "Helps you stay focused by filtering websites based on your tasks",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:1234/*"
   ],
   "action": {
     "default_popup": "popup.html"
@@ -17,5 +21,4 @@
     "service_worker": "llmService.js",
     "type": "module"
   }
-
 } 

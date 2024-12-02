@@ -16,9 +16,10 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('pageDescription').textContent = pageInfo.description || 'No description found';
 
       log('Page info retrieved:', pageInfo);
-      // Get LLM analysis
       try {
+        const startTime = performance.now();
         const analysis = await llmService.analyzeWebsite(pageInfo);
+        log('Analysis time:', (performance.now() - startTime) / 1000);
         document.getElementById('analysisResult').textContent = analysis;
       } catch (error) {
         console.error('Error getting LLM analysis:', error);
