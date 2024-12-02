@@ -13,7 +13,6 @@ class MockLLMService {
 
 class LMStudioLLMService {
   constructor() {
-    this.MODEL = "llama3.2";  // or whichever model you're using
     this.API_URL = "http://127.0.0.1:1234/v1/chat/completions";
   }
 
@@ -23,7 +22,6 @@ class LMStudioLLMService {
     };
 
     const data = {
-      model: this.MODEL,
       messages: [
         {
           role: "system",
