@@ -7,9 +7,7 @@ class MockLLMService {
     // Simulate LLM decision (random for now)
     const isAllowed = Math.random() > 0.5;
     
-    return {
-      result: isAllowed ? 'ALLOW' : 'BLOCK'  // Changed from 'decision' to 'result'
-    };
+    return isAllowed ? 'ALLOW' : 'BLOCK';
   }
 }
 

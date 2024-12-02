@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Get LLM analysis
       try {
         const analysis = await llmService.analyzeWebsite(pageInfo);
-        document.getElementById('analysisResult').textContent = analysis.result;
+        document.getElementById('analysisResult').textContent = analysis;
       } catch (error) {
         console.error('Error getting LLM analysis:', error);
         document.getElementById('analysisResult').textContent = 'Error analyzing website';
