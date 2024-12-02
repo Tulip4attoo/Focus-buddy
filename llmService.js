@@ -6,11 +6,25 @@ class MockLLMService {
 
     // Simulate LLM decision (random for now)
     const isAllowed = Math.random() > 0.5;
-    
+
     return isAllowed ? 'ALLOW' : 'BLOCK';
   }
 }
 
-// Export the service
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.target !== 'background') {
+    return;
+  }
+  if (message.type === 'log') {
+    console.log(message.data);
+  }
+});
+
+const log = async (...args) => chrome.runtime.sendMessage({
+  target: 'background',
+  type: 'log',
+  data: args,
+});
+
 const llmService = new MockLLMService();
-export default llmService;
+export { llmService as default, log };

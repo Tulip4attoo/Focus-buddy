@@ -1,4 +1,4 @@
-import llmService from './llmService.js';
+import llmService, { log } from './llmService.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('pageTitle').textContent = pageInfo.title;
       document.getElementById('pageDescription').textContent = pageInfo.description || 'No description found';
 
+      log('Page info retrieved:', pageInfo);
       // Get LLM analysis
       try {
         const analysis = await llmService.analyzeWebsite(pageInfo);
