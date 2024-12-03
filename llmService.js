@@ -1,6 +1,13 @@
+import { SYSTEM_PROMPTS } from './prompts.js';
+
 class LMStudioLLMService {
-  constructor() {
+  constructor(systemPrompt = SYSTEM_PROMPTS.default) {
     this.API_URL = "http://127.0.0.1:1234/v1/chat/completions";
+    this.systemPrompt = systemPrompt;
+  }
+
+  setSystemPrompt(prompt) {
+    this.systemPrompt = prompt;
   }
 
   async analyzeWebsite(pageInfo) {
@@ -12,7 +19,7 @@ class LMStudioLLMService {
       messages: [
         {
           role: "system",
-          content: "You are an AI that analyzes websites and determines if they should be allowed or blocked. Respond with either 'ALLOW' or 'BLOCK'."
+          content: this.systemPrompt
         },
         {
           role: "user",
