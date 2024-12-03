@@ -1,4 +1,4 @@
-import { SYSTEM_PROMPTS } from './prompts.js';
+import { SYSTEM_PROMPTS, USER_PROMPTS } from './prompts.js';
 
 class LMStudioLLMService {
   constructor(systemPrompt = SYSTEM_PROMPTS.default) {
@@ -23,7 +23,7 @@ class LMStudioLLMService {
         },
         {
           role: "user",
-          content: `Please analyze this website: ${JSON.stringify(pageInfo)}`
+          content: USER_PROMPTS.analyzeWebsite(pageInfo)
         }
       ]
     };
