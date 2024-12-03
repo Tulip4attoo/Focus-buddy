@@ -1,7 +1,8 @@
-import llmService, { log } from './llmService.js';
+import llmServiceForPopup, { log } from './background.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+    log('Starting to get page info');
     const activeTab = tabs[0];
     
     chrome.scripting.executeScript({
@@ -13,12 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
       // Display page info
       document.getElementById('pageUrl').textContent = pageInfo.url;
       document.getElementById('pageTitle').textContent = pageInfo.title;
-      document.getElementById('pageDescription').textContent = pageInfo.description || 'No description found';
 
       log('Page info retrieved:', pageInfo);
       try {
         const startTime = performance.now();
-        const analysis = await llmService.analyzeWebsite(pageInfo);
+        const analysis = await llmServiceForPopup.analyzeWebsite(pageInfo);
         if (analysis === 'BLOCK') {
           chrome.tabs.update(activeTab.id, { url: chrome.runtime.getURL('block.html') });
           return;
@@ -35,12 +35,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Function to be injected into the page
 function getPageInfo() {
-  const description = document.querySelector('meta[name="description"]')?.content || 
-                     document.querySelector('meta[property="og:description"]')?.content;
-  
   return {
     url: window.location.href,
     title: document.title,
-    description: description
   };
 } 

@@ -57,6 +57,7 @@ class LMStudioLLMService {
   }
 }
 
+const llmService = new LMStudioLLMService();
 
 chrome.runtime.onMessage.addListener((message) => {
   if (message.target !== 'background') {
@@ -75,5 +76,49 @@ const log = async (...args) => chrome.runtime.sendMessage({
 });
 
 
-const llmService = new LMStudioLLMService();
-export { llmService as default, log };
+// Add tab update listener
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url) {
+    // Skip browser internal pages
+    if (tab.url.startsWith('chrome://') || 
+        tab.url.startsWith('edge://') ||
+        tab.url.startsWith('chrome-extension://') ||
+        tab.url.startsWith('edge-extension://')) {
+      return;
+    }
+    // Wait 1s before checking
+    setTimeout(() => checkWebsite(tabId, tab.url), 1000);
+  }
+});
+
+
+// New function to check website
+async function checkWebsite(tabId, url) {
+  try {
+    // Get page info
+    const [result] = await chrome.scripting.executeScript({
+      target: { tabId },
+      function: getPageInfo
+    });
+    
+    const analysis = await llmService.analyzeWebsite(result.result);
+    if (analysis === 'BLOCK') {
+      chrome.tabs.update(tabId, { url: chrome.runtime.getURL('block.html') });
+    }
+  } catch (error) {
+    console.error('Error checking website:', error);
+  }
+}
+
+
+// Add getPageInfo function to background
+function getPageInfo() {
+  return {
+    url: window.location.href,
+    title: document.title,
+  };
+}
+
+
+const llmServiceForPopup = new LMStudioLLMService();
+export { llmServiceForPopup as default, log };
