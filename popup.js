@@ -19,6 +19,10 @@ document.addEventListener('DOMContentLoaded', function() {
       try {
         const startTime = performance.now();
         const analysis = await llmService.analyzeWebsite(pageInfo);
+        if (analysis === 'BLOCK') {
+          chrome.tabs.update(activeTab.id, { url: chrome.runtime.getURL('block.html') });
+          return;
+        }
         log('Analysis time:', (performance.now() - startTime) / 1000);
         document.getElementById('analysisResult').textContent = analysis;
       } catch (error) {

@@ -20,5 +20,9 @@
   "background": {
     "service_worker": "llmService.js",
     "type": "module"
-  }
+  },
+  "web_accessible_resources": [{
+    "resources": ["block.html"],
+    "matches": ["<all_urls>"]
+  }]
 } 
